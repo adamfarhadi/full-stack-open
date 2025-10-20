@@ -26,7 +26,7 @@ const App = () => {
       alert(`${newName} is already added to the phonebook`)
       return
     }
-    
+
     personService
       .create({ name: newName, number: newNumber })
       .then(returnedPerson => {
@@ -61,7 +61,11 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons 
+        persons={persons} 
+        filter={filter} 
+        setPersons={setPersons}
+      />
     </div>
   )
 }
