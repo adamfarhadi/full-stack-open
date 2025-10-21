@@ -68,7 +68,12 @@ const App = () => {
         setNewNumber('')
       })
       .catch(error => {
-        window.alert(`Error updating phone number for ${person.name}`)
+        setNotification(
+          { notification_type: "error", message: `Information of ${person.name} has already been removed from the server` }
+        )
+        setTimeout(() => {
+          setNotification({ notification_type: null, message: null })
+        }, 5000)
         setPersons(persons.filter(p => p.id !== id))
       })
   }
