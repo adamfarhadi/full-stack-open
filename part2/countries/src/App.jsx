@@ -1,6 +1,33 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const api_key = import.meta.env.VITE_OPENWEATHERMAP_API_KEY
+
+const Weather = ({ country }) => {
+  const [weather, setWeather] = useState(null)
+
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${country.capitalInfo.latlng[0]}&lon=${country.capitalInfo.latlng[1]}&appid=${api_key}`
+
+  useEffect(() => {
+    axios
+      .get(url)
+      .then(response => {
+        setWeather(response.data)
+      })
+  }, [])
+
+  if (weather === null) return
+
+  return (
+    <>
+      <h2>Weather in {weather.name}</h2>
+      <p>Temperature {Math.round((weather.main.temp - 273.15)*10)/10} Celsius</p>
+      <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}></img>
+      <p>Wind: {weather.wind.speed} m/s</p>
+    </>
+  )
+}
+
 const PrintCountry = ({ country }) => {
   const liCapitalsStyle = {
     display: 'inline'
@@ -9,7 +36,7 @@ const PrintCountry = ({ country }) => {
   return (
     <>
       <h1>{country.name.common}</h1>
-      <p>Capital(s):
+      <p>Capital(s): 
         {
           country.capital
             .map(capital => <li key={capital} style={liCapitalsStyle}>{capital} </li>)
@@ -25,7 +52,9 @@ const PrintCountry = ({ country }) => {
             .map(language => <li key={language}>{language}</li>)
         }
       </ul>
-      <img src={country.flags.png}></img></>
+      <img src={country.flags.png}></img>
+      <Weather country={country} />
+    </>
   )
 }
 
@@ -96,7 +125,7 @@ const App = () => {
       <form>
         find countries: <input value={filter} onChange={handleChange}></input>
       </form>
-      {filter !== '' && <PrintCountries countries={countries} filter={filter} setFilter={setFilter}/>}
+      {filter !== '' && <PrintCountries countries={countries} filter={filter} setFilter={setFilter} />}
     </div>
   )
 }
