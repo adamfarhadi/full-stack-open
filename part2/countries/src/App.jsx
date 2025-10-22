@@ -1,13 +1,35 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const PrintCountries = ({ countries, filter }) => {
+const PrintCountry = ({ country }) => {
   const liCapitalsStyle = {
     display: 'inline'
   }
 
-  console.log('PrintCountries')
+  return (
+    <>
+      <h1>{country.name.common}</h1>
+      <p>Capital(s):
+        {
+          country.capital
+            .map(capital => <li key={capital} style={liCapitalsStyle}>{capital} </li>)
+        }
+      </p>
+      <p>
+        Area: {country.area}
+      </p>
+      <h2>Languages</h2>
+      <ul>
+        {
+          Object.values(country.languages)
+            .map(language => <li key={language}>{language}</li>)
+        }
+      </ul>
+      <img src={country.flags.png}></img></>
+  )
+}
 
+const PrintCountries = ({ countries, filter, setFilter }) => {
   if (countries === null || filter === '')
     return
 
@@ -24,7 +46,11 @@ const PrintCountries = ({ countries, filter }) => {
       <>
         {
           filteredCountries
-            .map(country => <p key={country.name.common}>{country.name.common}</p>)
+            .map(country =>
+              <p key={country.name.common}>
+                {country.name.common}
+                <button onClick={() => setFilter(country.name.common)}>Show</button>
+              </p>)
         }
       </>
     )
@@ -34,24 +60,7 @@ const PrintCountries = ({ countries, filter }) => {
     const country = filteredCountries[0]
     return (
       <>
-        <h1>{country.name.common}</h1>
-        <p>Capital(s):
-          {
-            country.capital
-              .map(capital => <li key={capital} style={liCapitalsStyle}>{capital} </li>)
-          }
-        </p>
-        <p>
-          Area: {country.area}
-        </p>
-        <h2>Languages</h2>
-        <ul>
-          {
-            Object.values(country.languages)
-              .map(language => <li key={language}>{language}</li>)
-          }
-        </ul>
-        <img src={country.flags.png}></img>
+        <PrintCountry country={country} />
       </>
     )
   }
@@ -87,7 +96,7 @@ const App = () => {
       <form>
         find countries: <input value={filter} onChange={handleChange}></input>
       </form>
-      {filter !== '' && <PrintCountries countries={countries} filter={filter} />}
+      {filter !== '' && <PrintCountries countries={countries} filter={filter} setFilter={setFilter}/>}
     </div>
   )
 }
