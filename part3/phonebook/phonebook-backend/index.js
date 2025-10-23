@@ -26,6 +26,10 @@ let persons = [
   }
 ]
 
+function randInt(max) {
+  return Math.floor(Math.random() * max) + 1
+}
+
 app.get('/info', (request, response) => {
   const requestTime = Date()
   response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${requestTime}</p>`)
@@ -50,6 +54,32 @@ app.delete('/api/persons/:id', (request, response) => {
   persons = persons.filter(p => p.id !== id)
 
   response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+  const requestBody = request.body
+
+  if (!requestBody.name) {
+    return response.status(400).json({ error: 'name missing' })
+  }
+
+  if (!requestBody.number) {
+    return response.status(400).json({ error: 'number missing' })
+  }
+
+  const exists = persons.some(p => p.name.trim().toLowerCase() === requestBody.name.trim().toLowerCase())
+
+  if (exists)
+    return response.status(400).json({ error: 'name must be unique' })
+
+  const person = {
+    id: randInt(Number.MAX_SAFE_INTEGER),
+    name: requestBody.name,
+    number: requestBody.number
+  }
+
+  persons = persons.concat(person)
+  response.json(person)
 })
 
 const PORT = 3001
