@@ -59,10 +59,7 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  console.log('id', id);
-  console.log('persons before', persons)
   persons = persons.filter(p => p.id !== id)
-  console.log('persons after: ', persons)
 
   response.status(204).end()
 })
