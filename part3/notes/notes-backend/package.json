@@ -13,6 +13,7 @@
   "author": "Adam Farhadi",
   "license": "MIT",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.19.2"
   }
 }
