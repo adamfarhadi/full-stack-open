@@ -79,19 +79,19 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({ error: 'number missing' })
   }
 
-  const exists = persons.some(p => p.name.trim().toLowerCase() === requestBody.name.trim().toLowerCase())
+  // const exists = persons.some(p => p.name.trim().toLowerCase() === requestBody.name.trim().toLowerCase())
 
-  if (exists)
-    return response.status(400).json({ error: 'name must be unique' })
+  // if (exists)
+  //   return response.status(400).json({ error: 'name must be unique' })
 
-  const person = {
-    id: String(randInt(Number.MAX_SAFE_INTEGER)),
+  const person = new Person({
     name: requestBody.name,
     number: requestBody.number
-  }
+  })
 
-  persons = persons.concat(person)
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 const PORT = process.env.PORT
