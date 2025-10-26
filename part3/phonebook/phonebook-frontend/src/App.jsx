@@ -48,6 +48,15 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      .catch(error => {
+        console.log(error.response.data.error)
+        setNotification(
+          { notification_type: "error", message: error.response.data.error }
+        )
+        setTimeout(() => {
+          setNotification({ notification_type: null, message: null })
+        }, 5000)
+      })
   }
 
   const updatePhoneNumber = (id) => {
