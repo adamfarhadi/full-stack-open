@@ -77,13 +77,20 @@ const App = () => {
         setNewNumber('')
       })
       .catch(error => {
-        setNotification(
-          { notification_type: "error", message: `Information of ${person.name} has already been removed from the server` }
-        )
-        setTimeout(() => {
-          setNotification({ notification_type: null, message: null })
-        }, 5000)
-        setPersons(persons.filter(p => p.id !== id))
+        if (error.status === 404) {
+          setNotification(
+            { notification_type: "error", message: `Information of ${person.name} has already been removed from the server` }
+          )
+          setTimeout(() => {
+            setNotification({ notification_type: null, message: null })
+          }, 5000)
+          setPersons(persons.filter(p => p.id !== id))
+        } else if (error.status === 400) {
+          setNotification({ notification_type: "error", message: error.response.data.error })
+          setTimeout(() => {
+            setNotification({ notification_type: null, message: null })
+          }, 5000)
+        }
       })
   }
 
