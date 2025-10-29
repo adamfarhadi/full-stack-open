@@ -1,0 +1,11 @@
+{
+  "name": "helper-functions-and-unit-tests",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "author": "",
+  "license": "MIT"
+}
