@@ -6,8 +6,8 @@ POST http://localhost:3003/api/blogs/
 content-type: application/json
 
 {
-    "title": "tester",
-    "author": "tester",
-    "url": "tester.com",
-    "likes": 0
+    "title": "salad",
+    "author": "lettuce mctomato",
+    "url": "salad.com",
+    "likes": 63748
 }
