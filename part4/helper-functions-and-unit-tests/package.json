@@ -2,10 +2,13 @@
   "name": "helper-functions-and-unit-tests",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "list_helper.js",
   "scripts": {
     "test": "node --test"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }
