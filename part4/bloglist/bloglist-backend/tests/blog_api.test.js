@@ -32,6 +32,27 @@ test('GET /api/blogs unique identifier named id', async () => {
   assert.ok(allBlogsHaveId, 'Not all blogs have unique identifier named id')
 })
 
+test('POST /api/blogs add a new blog', async () => {
+  const newBlog = {
+    title: 'Raphael needs a new computer',
+    author: 'Raphael Raphaelsson',
+    url: 'https://raphaelraphaelsson.com/blogs/raphael-needs-a-new-computer',
+    likes: 1,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await test_helper.blogsInDB()
+  assert.strictEqual(blogsAtEnd.length, test_helper.initialBlogs.length + 1)
+
+  const blogTitles = blogsAtEnd.map(blog => blog.title)
+  assert(blogTitles.includes(newBlog.title))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
