@@ -1,17 +1,17 @@
 const mongoose = require('mongoose')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
 
-if (process.argv.length < 3) {
-  console.log('give password as argument')
-  process.exit(1)
-}
+mongoose.set('strictQuery', false)
 
-const password = process.argv[2]
-
-const url = `mongodb+srv://adamfarhadi_db_admin:${password}@full-stack-open.7cetmu4.mongodb.net/noteApp?retryWrites=true&w=majority&appName=full-stack-open`
-
-mongoose.set('strictQuery',false)
-
-mongoose.connect(url)
+mongoose
+  .connect(config.MONGODB_URI)
+  .then(() => {
+    logger.info('connected to MongoDB')
+  })
+  .catch((error) => {
+    logger.error('error connection to MongoDB:', error.message)
+  })
 
 const noteSchema = new mongoose.Schema({
   content: String,
@@ -21,7 +21,7 @@ const noteSchema = new mongoose.Schema({
 const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note({
-  content: 'HTML is kinda easy',
+  content: 'HTML is kinda meh broseph',
   important: true,
 })
 
