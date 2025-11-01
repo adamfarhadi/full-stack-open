@@ -13,13 +13,23 @@ beforeEach(async () => {
   await Blog.insertMany(test_helper.initialBlogs)
 })
 
-test('GET /api/blogs', async () => {
+test('GET /api/blogs correct number of blogs returned', async () => {
   const response = await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
   assert.strictEqual(response.body.length, test_helper.initialBlogs.length)
+})
+
+test('GET /api/blogs unique identifier named id', async () => {
+  const response = await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const allBlogsHaveId = response.body.every(blog => 'id' in blog)
+  assert.ok(allBlogsHaveId, 'Not all blogs have unique identifier named id')
 })
 
 after(async () => {
