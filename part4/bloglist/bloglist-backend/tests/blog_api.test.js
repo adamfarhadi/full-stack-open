@@ -76,6 +76,40 @@ test('POST /api/blogs add a new blog without likes', async () => {
   assert.strictEqual(blogWithoutLikes.likes, 0)
 })
 
+test('POST /api/blogs add a new blog without title', async () => {
+  const newBlog = {
+    author: 'Raphael Raphaelsson',
+    url: 'https://raphaelraphaelsson.com/blogs/raphael-needs-a-new-computer',
+    likes: 1,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await test_helper.blogsInDB()
+  assert.strictEqual(blogsAtEnd.length, test_helper.initialBlogs.length)
+})
+
+test('POST /api/blogs add a new blog without url', async () => {
+  const newBlog = {
+    title: 'Raphael needs a new computer',
+    author: 'Raphael Raphaelsson',
+    likes: 1,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await test_helper.blogsInDB()
+  assert.strictEqual(blogsAtEnd.length, test_helper.initialBlogs.length)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
