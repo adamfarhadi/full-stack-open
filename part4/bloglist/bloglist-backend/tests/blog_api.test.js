@@ -138,8 +138,49 @@ describe('when there are initially some blogs saved', () => {
         .expect(204)
 
       const blogsAtEnd = await test_helper.blogsInDB()
+      assert.deepStrictEqual(blogsAtEnd, blogsAtStart)
+    })
+  })
 
-      assert.deepStrictEqual(blogsAtEnd,blogsAtStart)
+  describe('updating a blog', () => {
+    test('succeeds with status code 200 if id is valid', async () => {
+      const blogsAtStart = await test_helper.blogsInDB()
+      const blogToUpdateInitialState = blogsAtStart[0]
+      const blogToUpdateWithUpdatedLikes = {
+        ...blogToUpdateInitialState,
+        likes: blogToUpdateInitialState.likes + 1
+      }
+
+      await api
+        .put(`/api/blogs/${blogToUpdateWithUpdatedLikes.id}`)
+        .send(blogToUpdateWithUpdatedLikes)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const blogsAtEnd = await test_helper.blogsInDB()
+
+      assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+
+      const updatedBlog = blogsAtEnd.find(b => b.id === blogToUpdateInitialState.id)
+      assert.strictEqual(updatedBlog.likes, blogToUpdateInitialState.likes + 1)
+    })
+
+    test('fails with status code 404 if id is invalid', async () => {
+      const blogsAtStart = await test_helper.blogsInDB()
+      const blogToUpdateInitialState = blogsAtStart[0]
+      const blogToUpdateWithUpdatedLikes = {
+        ...blogToUpdateInitialState,
+        likes: blogToUpdateInitialState.likes + 1,
+        id: '5a422bc61b54a676234d17fd'
+      }
+
+      await api
+        .put(`/api/blogs/${blogToUpdateWithUpdatedLikes.id}`)
+        .send(blogToUpdateWithUpdatedLikes)
+        .expect(404)
+
+      const blogsAtEnd = await test_helper.blogsInDB()
+      assert.deepStrictEqual(blogsAtEnd, blogsAtStart)
     })
   })
 })
