@@ -9,6 +9,7 @@ POST http://localhost:3001/api/notes/
 content-type: application/json
 
 {
-    "content": "lime",
-    "important": false
+    "content": "cookies",
+    "important": false,
+    "userId": "6908a1b1176114b26eae05ef"
 }
