@@ -7,8 +7,8 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY5MDljMzMzOGYxZjgyZTlmMDVhZjVkNyIsImlhdCI6MTc2MjI2Mjk5OCwiZXhwIjoxNzYyMjY2NTk4fQ.LWa_qlTRh7r4DqDGPa1GFi60naRAb93RU7NxwN6b9Gw
 
 {
-    "title": "cubano sandwiches are pretty dang tasty yo",
+    "title": "reuben sandwiches are pretty dang tasty yo",
     "author": "the cheesemaster",
-    "url": "cubanosandwiches.com",
-    "likes": 232784
+    "url": "reubensandwiches.com",
+    "likes": 83
 }
