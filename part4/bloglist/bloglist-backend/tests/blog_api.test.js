@@ -4,7 +4,9 @@ const supertest = require('supertest')
 const app = require('../app')
 const assert = require('node:assert')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const test_helper = require('./test_helper')
+const bcrypt = require('bcrypt')
 
 const api = supertest(app)
 
@@ -182,6 +184,140 @@ describe('when there are initially some blogs saved', () => {
       const blogsAtEnd = await test_helper.blogsInDB()
       assert.deepStrictEqual(blogsAtEnd, blogsAtStart)
     })
+  })
+})
+
+describe('when there is initially one user saved', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('test', 10)
+    const user = new User({ username: 'test', name: 'test', passwordHash: passwordHash })
+    await user.save()
+  })
+
+  test('creation succeeds with a valid username', async () => {
+    const usersAtStart = await test_helper.usersInDb()
+
+    const newUser = {
+      username: 'mluukkai',
+      name: 'Matti Luukkainen',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await test_helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    assert(usernames.includes(newUser.username))
+  })
+
+  test('creation fails with status code 400 if username is duplicate', async () => {
+    const usersAtStart = await test_helper.usersInDb()
+
+    const newUser = {
+      username: 'test',
+      name: 'test',
+      password: 'test',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await test_helper.usersInDb()
+    assert(result.body.error.includes('expected `username` to be unique'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with status code 400 if username not given', async () => {
+    const usersAtStart = await test_helper.usersInDb()
+
+    const newUser = {
+      name: 'test',
+      password: 'test',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await test_helper.usersInDb()
+    assert(result.body.error.includes('Path `username` is required'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with status code 400 if password not given', async () => {
+    const usersAtStart = await test_helper.usersInDb()
+
+    const newUser = {
+      username: 'test',
+      name: 'test'
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await test_helper.usersInDb()
+    assert(result.body.error.includes('password must be provided'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with status code 400 if password is less than 3 characters long', async () => {
+    const usersAtStart = await test_helper.usersInDb()
+
+    const newUser = {
+      username: 'test',
+      name: 'test',
+      password: 'te',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await test_helper.usersInDb()
+    assert(result.body.error.includes('password must be at least 3 characters long'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('creation fails with status code 400 if username is less than 3 characters long', async () => {
+    const usersAtStart = await test_helper.usersInDb()
+
+    const newUser = {
+      username: 'te',
+      name: 'test',
+      password: 'test',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await test_helper.usersInDb()
+    assert(result.body.error.includes('Path `username` (`te`, length 2) is shorter than the minimum allowed length (3)'))
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
   })
 })
 
