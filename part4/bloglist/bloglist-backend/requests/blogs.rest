@@ -4,10 +4,11 @@ GET http://localhost:3003/api/blogs/
 ###
 POST http://localhost:3003/api/blogs/
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY5MDljMzMzOGYxZjgyZTlmMDVhZjVkNyIsImlhdCI6MTc2MjI2Mjk5OCwiZXhwIjoxNzYyMjY2NTk4fQ.LWa_qlTRh7r4DqDGPa1GFi60naRAb93RU7NxwN6b9Gw
 
 {
-    "title": "cheesecake is pretty dang tasty yo",
+    "title": "cubano sandwiches are pretty dang tasty yo",
     "author": "the cheesemaster",
-    "url": "cheesecake.com",
-    "likes": 0
+    "url": "cubanosandwiches.com",
+    "likes": 232784
 }
