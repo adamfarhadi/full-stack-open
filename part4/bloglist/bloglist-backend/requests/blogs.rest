@@ -4,7 +4,7 @@ GET http://localhost:3003/api/blogs/
 ###
 POST http://localhost:3003/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY5MDljMzMzOGYxZjgyZTlmMDVhZjVkNyIsImlhdCI6MTc2MjI2Mjk5OCwiZXhwIjoxNzYyMjY2NTk4fQ.LWa_qlTRh7r4DqDGPa1GFi60naRAb93RU7NxwN6b9Gw
+Authorization: Bearer 
 
 {
     "title": "reuben sandwiches are pretty dang tasty yo",
@@ -12,3 +12,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc
     "url": "reubensandwiches.com",
     "likes": 83
 }
+
+###
+DELETE http://localhost:3003/api/blogs/690a113b0b17f8bcc0a0a779
+content-type: application/json
+Authorization: Bearer 
