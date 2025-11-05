@@ -36,7 +36,23 @@ describe('when there are initially some blogs saved', () => {
   })
 
   describe('adding a new blog', () => {
-    test('succeeds with valid data', async () => {
+    var authorizationString = null
+
+    beforeEach(async () => {
+      await User.deleteMany({})
+      const passwordHash = await bcrypt.hash('test', 10)
+      const user = new User({ username: 'test', name: 'test', passwordHash: passwordHash })
+      await user.save()
+
+      const loginResponse = await api
+        .post('/api/login')
+        .send({ username: user.username, password: 'test' })
+
+      const token = loginResponse.body.token
+      authorizationString = 'Bearer '.concat(token)
+    })
+
+    test('succeeds with valid data and valid token provided', async () => {
       const newBlog = {
         title: 'Raphael needs a new computer',
         author: 'Raphael Raphaelsson',
@@ -46,6 +62,7 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', authorizationString)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -57,7 +74,7 @@ describe('when there are initially some blogs saved', () => {
       assert(blogTitles.includes(newBlog.title))
     })
 
-    test('succeeds if property likes is missing', async () => {
+    test('succeeds if property likes is missing and valid token provided', async () => {
       const newBlog = {
         title: 'Raphael needs a new computer',
         author: 'Raphael Raphaelsson',
@@ -66,6 +83,7 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', authorizationString)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -80,7 +98,7 @@ describe('when there are initially some blogs saved', () => {
       assert.strictEqual(blogWithoutLikes.likes, 0)
     })
 
-    test('fails with status code 400 if title is missing', async () => {
+    test('fails with status code 400 if title is missing and valid token provided', async () => {
       const newBlog = {
         author: 'Raphael Raphaelsson',
         url: 'https://raphaelraphaelsson.com/blogs/raphael-needs-a-new-computer',
@@ -89,6 +107,7 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', authorizationString)
         .send(newBlog)
         .expect(400)
         .expect('Content-Type', /application\/json/)
@@ -97,7 +116,7 @@ describe('when there are initially some blogs saved', () => {
       assert.strictEqual(blogsAtEnd.length, test_helper.initialBlogs.length)
     })
 
-    test('fails with status code 400 if url is missing', async () => {
+    test('fails with status code 400 if url is missing and valid token provided', async () => {
       const newBlog = {
         title: 'Raphael needs a new computer',
         author: 'Raphael Raphaelsson',
@@ -106,8 +125,27 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', authorizationString)
         .send(newBlog)
         .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+      const blogsAtEnd = await test_helper.blogsInDB()
+      assert.strictEqual(blogsAtEnd.length, test_helper.initialBlogs.length)
+    })
+
+    test('fails with status code 401 if valid token not provided', async () => {
+      const newBlog = {
+        title: 'Raphael needs a new computer',
+        author: 'Raphael Raphaelsson',
+        url: 'https://raphaelraphaelsson.com/blogs/raphael-needs-a-new-computer',
+        likes: 1,
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
         .expect('Content-Type', /application\/json/)
 
       const blogsAtEnd = await test_helper.blogsInDB()
@@ -116,12 +154,43 @@ describe('when there are initially some blogs saved', () => {
   })
 
   describe('deleting a blog', () => {
-    test('succeeds with status code 204 if id is valid', async () => {
+    var authorizationString = null
+
+    beforeEach(async () => {
+      await User.deleteMany({})
+      const passwordHash = await bcrypt.hash('test', 10)
+      const user = new User({ username: 'test', name: 'test', passwordHash: passwordHash })
+      await user.save()
+
+      const loginResponse = await api
+        .post('/api/login')
+        .send({ username: user.username, password: 'test' })
+
+      const token = loginResponse.body.token
+      authorizationString = 'Bearer '.concat(token)
+    })
+
+    test('succeeds with status code 204 if id is valid and valid token provided', async () => {
+      const newBlog = {
+        title: 'Raphael needs a new computer',
+        author: 'Raphael Raphaelsson',
+        url: 'https://raphaelraphaelsson.com/blogs/raphael-needs-a-new-computer',
+        likes: 1,
+      }
+
+      await api
+        .post('/api/blogs')
+        .set('Authorization', authorizationString)
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
       const blogsAtStart = await test_helper.blogsInDB()
-      const blogToDelete = blogsAtStart[0]
+      const blogToDelete = blogsAtStart.find(b => b.title === 'Raphael needs a new computer')
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set('Authorization', authorizationString)
         .expect(204)
 
       const blogsAtEnd = await test_helper.blogsInDB()
@@ -129,14 +198,15 @@ describe('when there are initially some blogs saved', () => {
       const titles = blogsAtEnd.map(blog => blog.title)
       assert(!titles.includes(blogToDelete.title))
 
-      assert.strictEqual(blogsAtEnd.length, test_helper.initialBlogs.length - 1)
+      assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
     })
 
-    test('succeeds with status code 204 if id is invalid', async () => {
+    test('succeeds with status code 204 if id is invalid and valid token is provided', async () => {
       const blogsAtStart = await test_helper.blogsInDB()
 
       await api
         .delete('/api/blogs/5a422bc61b54a676234d17fd')
+        .set('Authorization', authorizationString)
         .expect(204)
 
       const blogsAtEnd = await test_helper.blogsInDB()
