@@ -1,0 +1,15 @@
+###
+GET http://localhost:3001/api/notes/
+
+###
+GET http://localhost:3001/api/notes/68fb757f4907dee407410a08
+
+###
+POST http://localhost:3001/api/notes/
+Content-Type: application/json
+Authorization: Bearer
+
+{
+    "content": "test",
+    "important": true
+}
