@@ -4,16 +4,16 @@ GET http://localhost:3003/api/blogs/
 ###
 POST http://localhost:3003/api/blogs/
 content-type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFhdGFtaWZhcmhhbmVuIiwiaWQiOiI2OTA5YzA0ZjYyMjg0MmI5YzYxMjIxNjciLCJpYXQiOjE3NjIzNDgxNDUsImV4cCI6MTc2MjM1MTc0NX0.wloIcZN-f2A_8VESswLuTtaG6Itoikv56dAI7wkJ3Jk
 
 {
-    "title": "reuben sandwiches are pretty dang tasty yo",
-    "author": "the cheesemaster",
-    "url": "reubensandwiches.com",
+    "title": "mctester",
+    "author": "mctester",
+    "url": "mctester.com",
     "likes": 83
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/690a113b0b17f8bcc0a0a779
+DELETE http://localhost:3003/api/blogs/690b4ceec7995ac318d81b08
 content-type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY5MDljMzMzOGYxZjgyZTlmMDVhZjVkNyIsImlhdCI6MTc2MjM0ODI5MCwiZXhwIjoxNzYyMzUxODkwfQ.6dK-HNx7134lE8Su7A2mAd-OvMWp14B8LlTcsnYgi0A
