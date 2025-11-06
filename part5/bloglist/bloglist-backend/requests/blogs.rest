@@ -4,12 +4,12 @@ GET http://localhost:3003/api/blogs/
 ###
 POST http://localhost:3003/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFhdGFtaWZhcmhhbmVuIiwiaWQiOiI2OTA5YzA0ZjYyMjg0MmI5YzYxMjIxNjciLCJpYXQiOjE3NjIzNDgxNDUsImV4cCI6MTc2MjM1MTc0NX0.wloIcZN-f2A_8VESswLuTtaG6Itoikv56dAI7wkJ3Jk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY5MDljMzMzOGYxZjgyZTlmMDVhZjVkNyIsImlhdCI6MTc2MjQxODk2NCwiZXhwIjoxNzYyNDIyNTY0fQ.5cqw06bgega21GbR_n2VMsLbWwW_yJY88rae3sfSIYY
 
 {
-    "title": "mctester",
-    "author": "mctester",
-    "url": "mctester.com",
+    "title": "test blog number 2",
+    "author": "test mctest",
+    "url": "test2.com",
     "likes": 83
 }
 
