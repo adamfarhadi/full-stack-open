@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
@@ -13,6 +13,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({ notification_type: null, message: null })
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -59,10 +61,9 @@ const App = () => {
 
   const addBlog = async (blogObject) => {
     try {
+      blogFormRef.current.toggleVisibility()
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog))
-
-      console.log('returnedBlog: ', returnedBlog)
 
       setNotification(
         { notification_type: "success", message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added` }
@@ -93,7 +94,7 @@ const App = () => {
           </button>
         </p>
       }
-      <Togglable buttonLabel='create new blog'>
+      <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <AddNewBlogForm createBlog={addBlog} />
       </Togglable>
       {blogs.map(blog =>
