@@ -59,6 +59,8 @@ blogsRouter.put('/:id', async (request, response) => {
   blog.url = request.body.url
   blog.likes = request.body.likes
 
+  console.log('blog: ', blog)
+
   const savedBlog = await blog.save()
   response.status(200).json(savedBlog)
 

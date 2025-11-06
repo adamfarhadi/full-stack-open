@@ -17,3 +17,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc
 DELETE http://localhost:3003/api/blogs/690b4ceec7995ac318d81b08
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY5MDljMzMzOGYxZjgyZTlmMDVhZjVkNyIsImlhdCI6MTc2MjM0ODI5MCwiZXhwIjoxNzYyMzUxODkwfQ.6dK-HNx7134lE8Su7A2mAd-OvMWp14B8LlTcsnYgi0A
+
+###
+PUT http://localhost:3003/api/blogs/690c613f710d5e7d30045ab1
+content-type: application/json
+
+{
+    "title": "test blog number 2",
+    "author": "test mctest",
+    "url": "test2.com",
+    "likes": 86
+}
