@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +13,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState({ notification_type: null, message: null })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -36,11 +39,17 @@ const App = () => {
         'loggedInBlogAppUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
+
       setUser(user)
       setUsername('')
       setPassword('')
     } catch {
-      console.error('error logging in')
+      setNotification(
+        { notification_type: "error", message: 'wrong username or password' }
+      )
+      setTimeout(() => {
+        setNotification({ notification_type: null, message: null })
+      }, 5000)
     }
   }
 
@@ -63,8 +72,21 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
-    } catch (error) {
-      console.error('error adding blog')
+
+      setNotification(
+        { notification_type: "success", message: `a new blog ${returnedBlog.name} by ${returnedBlog.author} added` }
+      )
+      setTimeout(() => {
+        setNotification({ notification_type: null, message: null })
+      }, 5000)
+
+    } catch {
+      setNotification(
+        { notification_type: "error", message: `error adding blog ${blogObject.name} by ${blogObject.author}` }
+      )
+      setTimeout(() => {
+        setNotification({ notification_type: null, message: null })
+      }, 5000)
     }
   }
 
@@ -110,6 +132,7 @@ const App = () => {
   const blogForm = () => (
     <div>
       <h2>blogs</h2>
+      <Notification notification_type={notification.notification_type} message={notification.message} />
       {
         <p>
           {user.name} logged in
@@ -128,6 +151,7 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h1>log in to application</h1>
+      <Notification notification_type={notification.notification_type} message={notification.message} />
       <form onSubmit={handleLogin}>
         <div>
           <label>
