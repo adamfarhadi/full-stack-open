@@ -84,7 +84,7 @@ const App = () => {
 
   const handleLike = async blogObject => {
     try {
-      const blogToUpdate = { ...blogObject, likes: blogObject.likes + 1 }
+      const blogToUpdate = { ...blogObject, likes: blogObject.likes + 1, user: blogObject.user.id }
       const updatedBlog = await blogService.update(blogToUpdate.id, blogToUpdate)
       setBlogs(blogs.map(b => b.id === updatedBlog.id ? updatedBlog : b))
     } catch {

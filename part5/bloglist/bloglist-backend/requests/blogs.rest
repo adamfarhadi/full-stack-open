@@ -19,12 +19,13 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY5MDljMzMzOGYxZjgyZTlmMDVhZjVkNyIsImlhdCI6MTc2MjM0ODI5MCwiZXhwIjoxNzYyMzUxODkwfQ.6dK-HNx7134lE8Su7A2mAd-OvMWp14B8LlTcsnYgi0A
 
 ###
-PUT http://localhost:3003/api/blogs/690c613f710d5e7d30045ab1
+PUT http://localhost:3003/api/blogs/690ca4cde1647bfc385ff052
 content-type: application/json
 
 {
-    "title": "test blog number 2",
-    "author": "test mctest",
-    "url": "test2.com",
-    "likes": 86
+    "title": "eggs",
+    "author": "eggs",
+    "url": "eggs",
+    "likes": 748,
+    "user": "6909c04f622842b9c6122167"
 }
