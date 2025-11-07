@@ -6,7 +6,6 @@ const Notification = ({ notification_type, message }) => {
   return (
     <div className={notification_type}>
       {message}
-      {console.log(notification_type)}
     </div>
   )
 }

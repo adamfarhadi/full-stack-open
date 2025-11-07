@@ -97,6 +97,29 @@ const App = () => {
     }
   }
 
+  const handleRemove = async blogObject => {
+    try {
+      const blogToRemove = { ...blogObject }
+      if (window.confirm(`Are you sure you want to remove blog ${blogToRemove.title} by ${blogToRemove.author}?`)) {
+        await blogService.remove(blogToRemove.id)
+        setBlogs(blogs.filter(b => b.id !== blogToRemove.id))
+        setNotification(
+          { notification_type: "success", message: `blog ${blogObject.title} successfully deleted` }
+        )
+        setTimeout(() => {
+          setNotification({ notification_type: null, message: null })
+        }, 5000)
+      }
+    } catch {
+      setNotification(
+        { notification_type: "error", message: `error deleting blog ${blogObject.title}` }
+      )
+      setTimeout(() => {
+        setNotification({ notification_type: null, message: null })
+      }, 5000)
+    }
+  }
+
   const blogForm = () => (
     <div>
       <h2>blogs</h2>
@@ -112,9 +135,11 @@ const App = () => {
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <AddNewBlogForm createBlog={addBlog} />
       </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
-      )}
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map(blog =>
+          <Blog key={blog.id} blog={blog} handleLike={handleLike} currentUser={user} handleRemove={handleRemove} />
+        )}
     </div>
   )
 
