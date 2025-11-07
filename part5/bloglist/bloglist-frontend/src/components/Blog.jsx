@@ -44,7 +44,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
     <div style={blogStyle}>
       <div id='blog-title' style={{ display: 'inline' }}>{blog.title} </div>
       <div id='blog-author' style={{ display: 'inline' }}>{blog.author} </div>
-      <button onClick={toggleVisibility}>
+      <button onClick={toggleVisibility} id='toggle-visibility-button'>
         {visible ? 'hide' : 'show'}
       </button>
       {visible && showDetails()}
