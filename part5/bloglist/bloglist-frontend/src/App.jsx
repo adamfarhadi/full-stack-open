@@ -46,7 +46,7 @@ const App = () => {
       setPassword('')
     } catch {
       setNotification(
-        { notification_type: "error", message: 'wrong username or password' }
+        { notification_type: 'error', message: 'wrong username or password' }
       )
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
@@ -66,7 +66,7 @@ const App = () => {
       setBlogs(blogs.concat(returnedBlog))
 
       setNotification(
-        { notification_type: "success", message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added` }
+        { notification_type: 'success', message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added` }
       )
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
@@ -74,7 +74,7 @@ const App = () => {
 
     } catch {
       setNotification(
-        { notification_type: "error", message: `error adding blog ${blogObject.title} by ${blogObject.author}` }
+        { notification_type: 'error', message: `error adding blog ${blogObject.title} by ${blogObject.author}` }
       )
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
@@ -89,7 +89,7 @@ const App = () => {
       setBlogs(blogs.map(b => b.id === updatedBlog.id ? updatedBlog : b))
     } catch {
       setNotification(
-        { notification_type: "error", message: `error liking blog ${blogObject.title}` }
+        { notification_type: 'error', message: `error liking blog ${blogObject.title}` }
       )
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
@@ -104,7 +104,7 @@ const App = () => {
         await blogService.remove(blogToRemove.id)
         setBlogs(blogs.filter(b => b.id !== blogToRemove.id))
         setNotification(
-          { notification_type: "success", message: `blog ${blogObject.title} successfully deleted` }
+          { notification_type: 'success', message: `blog ${blogObject.title} successfully deleted` }
         )
         setTimeout(() => {
           setNotification({ notification_type: null, message: null })
@@ -112,7 +112,7 @@ const App = () => {
       }
     } catch {
       setNotification(
-        { notification_type: "error", message: `error deleting blog ${blogObject.title}` }
+        { notification_type: 'error', message: `error deleting blog ${blogObject.title}` }
       )
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })

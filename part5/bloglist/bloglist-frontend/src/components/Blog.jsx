@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
   const [visible, setVisible] = useState(false)
@@ -26,7 +26,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
 
   const showDetails = () => (
     <>
-      <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
+      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
         <li>{blog.url}</li>
         <li>
           likes: {blog.likes}
