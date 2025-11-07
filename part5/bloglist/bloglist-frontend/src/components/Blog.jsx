@@ -27,8 +27,8 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
   const showDetails = () => (
     <>
       <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-        <li>{blog.url}</li>
-        <li>
+        <li id='blog-url'>{blog.url}</li>
+        <li id='blog-likes'>
           likes: {blog.likes}
           <button onClick={() => handleLike(blog)}>
             like
@@ -42,7 +42,8 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author}
+      <div id='blog-title' style={{ display: 'inline' }}>{blog.title} </div>
+      <div id='blog-author' style={{ display: 'inline' }}>{blog.author} </div>
       <button onClick={toggleVisibility}>
         {visible ? 'hide' : 'show'}
       </button>
