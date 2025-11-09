@@ -34,6 +34,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
             like
           </button>
         </li>
+        {console.log('blog: ', blog)}
         <li>{blog.user.name}</li>
         {showDeleteButton()}
       </ul>
