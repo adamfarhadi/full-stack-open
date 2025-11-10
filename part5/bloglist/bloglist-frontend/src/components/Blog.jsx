@@ -29,7 +29,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
       <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
         <li id='blog-url'>{blog.url}</li>
         <li id='blog-likes'>
-          likes: {blog.likes}
+          likes: {blog.likes} {' '}
           <button onClick={() => handleLike(blog)} id='handle-like-button'>
             like
           </button>

@@ -53,5 +53,24 @@ describe('Blog app', () => {
       expect(page.getByText(title, { exact: true })).toBeVisible()
       expect(page.getByText(author, { exact: true })).toBeVisible()
     })
+
+    describe('and several blogs exist', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, 'Test Blog 1', 'Test Author 1', 'test-url-1.com')
+        await createBlog(page, 'Test Blog 2', 'Test Author 2', 'test-url-2.com')
+        await createBlog(page, 'Test Blog 3', 'Test Author 3', 'test-url-3.com')
+      })
+
+      test('one of the blogs can be liked', async ({ page }) => {
+        await page.getByText('Test Blog 1 Test Author 1 show');
+        await page.getByRole('button', { name: 'show' }).first().click()
+
+        await expect(page.getByText('test-url-1.com')).toBeVisible()
+        await expect(page.getByText('likes: 0')).toBeVisible()
+
+        await page.getByRole('button', { name: 'like' }).click()
+        await expect(page.getByText('likes: 1')).toBeVisible()
+      })
+    })
   })
 })
