@@ -42,7 +42,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
   )
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} data-testid='blog-box'>
       <div id='blog-title' style={{ display: 'inline' }}>{blog.title} </div>
       <div id='blog-author' style={{ display: 'inline' }}>{blog.author} </div>
       <button onClick={toggleVisibility} id='toggle-visibility-button'>

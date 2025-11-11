@@ -1,5 +1,6 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
 const { loginWith, createBlog } = require('./helper')
+const { console } = require('inspector')
 
 
 describe('Blog app', () => {
@@ -70,6 +71,81 @@ describe('Blog app', () => {
 
         await page.getByRole('button', { name: 'like' }).click()
         await expect(page.getByText('likes: 1')).toBeVisible()
+      })
+
+      test('blogs arranged in order of descending likes', async ({ page, request }) => {
+        const blogsFromServer = await (await request.get('/api/blogs')).json()
+        const blog1obj = blogsFromServer.find(b => b.title === 'Test Blog 1')
+        const blog2obj = blogsFromServer.find(b => b.title === 'Test Blog 2')
+        const blog3obj = blogsFromServer.find(b => b.title === 'Test Blog 3')
+
+        await request.put(`/api/blogs/${blog1obj.id}`, {
+          data: {
+            title: blog1obj.title,
+            author: blog1obj.author,
+            url: blog1obj.url,
+            likes: 53
+          }
+        })
+        await request.put(`/api/blogs/${blog2obj.id}`, {
+          data: {
+            title: blog2obj.title,
+            author: blog2obj.author,
+            url: blog2obj.url,
+            likes: 103
+          }
+        })
+        await request.put(`/api/blogs/${blog3obj.id}`, {
+          data: {
+            title: blog3obj.title,
+            author: blog3obj.author,
+            url: blog3obj.url,
+            likes: 173
+          }
+        })
+
+        await page.goto('/')
+
+        const blog1 = await page.getByText('Test Blog 1 Test Author 1');
+        await blog1.getByRole('button', { name: 'show' }).click()
+        await expect(blog1.getByText('test-url-1.com')).toBeVisible()
+        await expect(blog1.getByText('likes: 53')).toBeVisible()
+
+        const blog2 = await page.getByText('Test Blog 2 Test Author 2');
+        await blog2.getByRole('button', { name: 'show' }).click()
+        await expect(blog2.getByText('test-url-2.com')).toBeVisible()
+        await expect(blog2.getByText('likes: 103')).toBeVisible()
+
+        const blog3 = await page.getByText('Test Blog 3 Test Author 3');
+        await blog3.getByRole('button', { name: 'show' }).click()
+        await expect(blog3.getByText('test-url-3.com')).toBeVisible()
+        await expect(blog3.getByText('likes: 173')).toBeVisible()
+
+        const blogs = await page.getByTestId('blog-box')
+
+        const topBlog = await blogs.first()
+        expect(topBlog.getByText('Test Blog 1 Test Author 1')).not.toBeVisible()
+        expect(topBlog.getByText('Test Blog 2 Test Author 2')).not.toBeVisible()
+        expect(topBlog.getByText('Test Blog 3 Test Author 3')).toBeVisible()
+        expect(topBlog.getByText('likes: 53')).not.toBeVisible()
+        expect(topBlog.getByText('likes: 103')).not.toBeVisible()
+        expect(topBlog.getByText('likes: 173')).toBeVisible()
+        
+        const middleBlog = await blogs.nth(1)
+        expect(middleBlog.getByText('Test Blog 1 Test Author 1')).not.toBeVisible()
+        expect(middleBlog.getByText('Test Blog 2 Test Author 2')).toBeVisible()
+        expect(middleBlog.getByText('Test Blog 3 Test Author 3')).not.toBeVisible()
+        expect(middleBlog.getByText('likes: 53')).not.toBeVisible()
+        expect(middleBlog.getByText('likes: 103')).toBeVisible()
+        expect(middleBlog.getByText('likes: 173')).not.toBeVisible()
+
+        const bottomBlog = await blogs.last()
+        expect(bottomBlog.getByText('Test Blog 1 Test Author 1')).toBeVisible()
+        expect(bottomBlog.getByText('Test Blog 2 Test Author 2')).not.toBeVisible()
+        expect(bottomBlog.getByText('Test Blog 3 Test Author 3')).not.toBeVisible()
+        expect(bottomBlog.getByText('likes: 53')).toBeVisible()
+        expect(bottomBlog.getByText('likes: 103')).not.toBeVisible()
+        expect(bottomBlog.getByText('likes: 173')).not.toBeVisible()
       })
     })
   })
