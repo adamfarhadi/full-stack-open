@@ -13,6 +13,13 @@ describe('Blog app', () => {
         password: 'salainen'
       }
     })
+    await request.post('/api/users', {
+      data: {
+        name: 'Test McTester',
+        username: 'test',
+        password: 'test'
+      }
+    })
     await page.goto('/')
   })
 
@@ -84,6 +91,24 @@ describe('Blog app', () => {
         await blog1.getByRole('button', { name: 'remove' }).click()
         await expect(blog1.getByText('Test Blog 1')).not.toBeVisible()
         await expect(page.getByText('blog Test Blog 1 successfully deleted')).toBeVisible()
+      })
+
+      test('only a user who added a blog can see the delete button', async ({ page }) => {
+        const blog1AsMluukkai = await page.getByText('Test Blog 1 Test Author 1');
+        await blog1AsMluukkai.getByRole('button', { name: 'show' }).click()
+        await expect(blog1AsMluukkai.getByText('test-url-1.com')).toBeVisible()
+        await expect(blog1AsMluukkai.getByText('likes: 0')).toBeVisible()
+        await expect(blog1AsMluukkai.getByRole('button', { name: 'remove' })).toBeVisible()
+        
+        await page.getByRole('button', { name: 'logout' }).click();
+        await loginWith(page, 'test', 'test')
+        await page.getByText('Test McTester logged in').waitFor()
+
+        const blog1AsTest = await page.getByText('Test Blog 1 Test Author 1');
+        await blog1AsTest.getByRole('button', { name: 'show' }).click()
+        await expect(blog1AsTest.getByText('test-url-1.com')).toBeVisible()
+        await expect(blog1AsTest.getByText('likes: 0')).toBeVisible()
+        await expect(blog1AsTest.getByRole('button', { name: 'remove' })).not.toBeVisible()
       })
 
       test('blogs arranged in order of descending likes', async ({ page, request }) => {
