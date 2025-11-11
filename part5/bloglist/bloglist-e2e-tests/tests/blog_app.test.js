@@ -73,6 +73,19 @@ describe('Blog app', () => {
         await expect(page.getByText('likes: 1')).toBeVisible()
       })
 
+      test('a user who added a blog can delete a blog', async ({ page }) => {
+        const blogs = await page.getByTestId('blog-box')
+        var blog1 = await blogs.getByText('Test Blog 1 Test Author 1')
+        await blog1.getByRole('button', { name: 'show' }).click()
+        await blog1.getByText('test-url-1.com', { exact: true }).waitFor()
+        page.on('dialog', async dialog => {
+          await dialog.accept();
+        })
+        await blog1.getByRole('button', { name: 'remove' }).click()
+        await expect(blog1.getByText('Test Blog 1')).not.toBeVisible()
+        await expect(page.getByText('blog Test Blog 1 successfully deleted')).toBeVisible()
+      })
+
       test('blogs arranged in order of descending likes', async ({ page, request }) => {
         const blogsFromServer = await (await request.get('/api/blogs')).json()
         const blog1obj = blogsFromServer.find(b => b.title === 'Test Blog 1')
@@ -130,7 +143,7 @@ describe('Blog app', () => {
         expect(topBlog.getByText('likes: 53')).not.toBeVisible()
         expect(topBlog.getByText('likes: 103')).not.toBeVisible()
         expect(topBlog.getByText('likes: 173')).toBeVisible()
-        
+
         const middleBlog = await blogs.nth(1)
         expect(middleBlog.getByText('Test Blog 1 Test Author 1')).not.toBeVisible()
         expect(middleBlog.getByText('Test Blog 2 Test Author 2')).toBeVisible()
