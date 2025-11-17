@@ -17,6 +17,7 @@ const AnecdoteList = () => {
   return (
     <div>
       {anecdotes
+        .slice()
         .sort((a, b) => b.votes - a.votes)
         .map(anecdote => (
           <div key={anecdote.id}>
