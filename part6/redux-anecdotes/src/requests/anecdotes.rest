@@ -1,0 +1,21 @@
+###
+GET http://localhost:3001/anecdotes/
+
+###
+POST http://localhost:3001/anecdotes/
+content-type: application/json
+
+{
+  "content": "cheesecake",
+  "votes": 1
+}
+
+###
+PUT http://localhost:3001/anecdotes/98313
+content-type: application/json
+
+{
+  "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
+  "id": "98312",
+  "votes": 2
+}
