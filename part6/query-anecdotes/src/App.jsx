@@ -1,11 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { getAnecdotes } from './requests'
 
 const App = () => {
-  const queryClient = useQueryClient
-
   const handleVote = (anecdote) => {
     console.log('vote')
   }
@@ -16,7 +14,7 @@ const App = () => {
     refetchOnWindowFocus: false
   })
 
-  if(result.isError) {
+  if (result.isError) {
     return (
       <div>
         anecdote service not available due to problems in server
