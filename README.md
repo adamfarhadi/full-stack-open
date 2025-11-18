@@ -20,3 +20,7 @@ My solutions for the full stack web development course offered by Open Universit
 ## Part 5 - [Testing React apps](https://fullstackopen.com/en/part5)
 * Exercises done: 23/23
 * Key tools/frameworks/libraries used: React, Node.js, Vitest, Playwright
+
+## Part 6 - [Advanced state management](https://fullstackopen.com/en/part6)
+* Exercises done: 24/24
+* Key tools/frameworks/libraries used: React, Redux, TanStack Query
