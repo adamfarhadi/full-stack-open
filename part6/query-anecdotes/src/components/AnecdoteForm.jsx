@@ -9,7 +9,14 @@ const AnecdoteForm = () => {
 
   const createNoteMutation = useMutation({
     mutationFn: createAnecdote,
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['anecdotes'] }) }
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['anecdotes'] }) },
+    onError: (error) => {
+      notificationDispatch({
+        type: 'SET_NOTIFICATION',
+        payload: 'too short anecdote, must have length 5 or more'
+      })
+      setTimeout(() => notificationDispatch({ type: 'RESET_NOTIFICATION' }), 5000)
+    }
   })
 
   const onCreate = (event) => {
