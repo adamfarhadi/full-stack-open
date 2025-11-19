@@ -63,16 +63,28 @@ const CreateNew = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
-      votes: 0
-    })
 
-    navigate('/')
-    props.setNotification(`a new anecdote ${content.value} created!`)
-    setTimeout(() => props.setNotification(''), 5000)
+    switch (e.nativeEvent.submitter.name) {
+      case 'create':
+        props.addNew({
+          content: content.value,
+          author: author.value,
+          info: info.value,
+          votes: 0
+        })
+
+        navigate('/')
+        props.setNotification(`a new anecdote ${content.value} created!`)
+        setTimeout(() => props.setNotification(''), 5000)
+        break
+      case 'reset':
+        content.reset()
+        author.reset()
+        info.reset()
+        break
+      default:
+        break
+    }
   }
 
   return (
@@ -91,11 +103,11 @@ const CreateNew = (props) => {
           url for more info:
           <input {...info} />
         </div>
-        <button>create</button>
+        <button name='create'>create</button>
+        <button name='reset'>reset</button>
       </form>
     </div>
   )
-
 }
 
 const App = () => {
