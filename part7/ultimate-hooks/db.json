@@ -1,0 +1,65 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "content": "custom-hooks are awesome!"
+    },
+    {
+      "id": 2,
+      "content": "best feature ever <3"
+    },
+    {
+      "content": "eggs",
+      "id": 3
+    },
+    {
+      "content": "eggs",
+      "id": 4
+    },
+    {
+      "content": "CHEESES! :D",
+      "id": 5
+    },
+    {
+      "content": "bc",
+      "id": 6
+    }
+  ],
+  "persons": [
+    {
+      "id": 1,
+      "name": "mluukkai",
+      "number": "040-5483923"
+    },
+    {
+      "id": 2,
+      "name": "hellas",
+      "number": "012-123123"
+    },
+    {
+      "name": "cheeses",
+      "number": "837438",
+      "id": 3
+    },
+    {
+      "name": "cheeses",
+      "number": "837438",
+      "id": 4
+    },
+    {
+      "name": "rwhegb",
+      "number": "8349",
+      "id": 5
+    },
+    {
+      "name": "sfdgsd",
+      "number": "3129716",
+      "id": 6
+    },
+    {
+      "name": "CHEESES! :D",
+      "number": "132",
+      "id": 7
+    }
+  ]
+}
