@@ -12,14 +12,15 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState({ notification_type: null, message: null })
+  const [notification, setNotification] = useState({
+    notification_type: null,
+    message: null,
+  })
 
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -31,23 +32,22 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async event => {
+  const handleLogin = async (event) => {
     event.preventDefault()
 
     try {
       const user = await loginService.login({ username, password })
-      window.localStorage.setItem(
-        'loggedInBlogAppUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedInBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
 
       setUser(user)
       setUsername('')
       setPassword('')
     } catch {
-      setNotification(
-        { notification_type: 'error', message: 'wrong username or password' }
-      )
+      setNotification({
+        notification_type: 'error',
+        message: 'wrong username or password',
+      })
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
       }, 5000)
@@ -65,55 +65,63 @@ const App = () => {
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog))
 
-      setNotification(
-        { notification_type: 'success', message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added` }
-      )
+      setNotification({
+        notification_type: 'success',
+        message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`,
+      })
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
       }, 5000)
-
     } catch {
-      setNotification(
-        { notification_type: 'error', message: `error adding blog ${blogObject.title} by ${blogObject.author}` }
-      )
+      setNotification({
+        notification_type: 'error',
+        message: `error adding blog ${blogObject.title} by ${blogObject.author}`,
+      })
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
       }, 5000)
     }
   }
 
-  const handleLike = async blogObject => {
+  const handleLike = async (blogObject) => {
     try {
-      const blogToUpdate = { ...blogObject, likes: blogObject.likes + 1, user: blogObject.user.id }
+      const blogToUpdate = {
+        ...blogObject,
+        likes: blogObject.likes + 1,
+        user: blogObject.user.id,
+      }
       const updatedBlog = await blogService.update(blogToUpdate.id, blogToUpdate)
-      setBlogs(blogs.map(b => b.id === updatedBlog.id ? updatedBlog : b))
+      setBlogs(blogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b)))
     } catch {
-      setNotification(
-        { notification_type: 'error', message: `error liking blog ${blogObject.title}` }
-      )
+      setNotification({
+        notification_type: 'error',
+        message: `error liking blog ${blogObject.title}`,
+      })
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
       }, 5000)
     }
   }
 
-  const handleRemove = async blogObject => {
+  const handleRemove = async (blogObject) => {
     try {
       const blogToRemove = { ...blogObject }
       if (window.confirm(`Are you sure you want to remove blog ${blogToRemove.title} by ${blogToRemove.author}?`)) {
         await blogService.remove(blogToRemove.id)
-        setBlogs(blogs.filter(b => b.id !== blogToRemove.id))
-        setNotification(
-          { notification_type: 'success', message: `blog ${blogObject.title} successfully deleted` }
-        )
+        setBlogs(blogs.filter((b) => b.id !== blogToRemove.id))
+        setNotification({
+          notification_type: 'success',
+          message: `blog ${blogObject.title} successfully deleted`,
+        })
         setTimeout(() => {
           setNotification({ notification_type: null, message: null })
         }, 5000)
       }
     } catch {
-      setNotification(
-        { notification_type: 'error', message: `error deleting blog ${blogObject.title}` }
-      )
+      setNotification({
+        notification_type: 'error',
+        message: `error deleting blog ${blogObject.title}`,
+      })
       setTimeout(() => {
         setNotification({ notification_type: null, message: null })
       }, 5000)
@@ -137,9 +145,9 @@ const App = () => {
       </Togglable>
       {blogs
         .sort((a, b) => b.likes - a.likes)
-        .map(blog =>
+        .map((blog) => (
           <Blog key={blog.id} blog={blog} handleLike={handleLike} currentUser={user} handleRemove={handleRemove} />
-        )}
+        ))}
     </div>
   )
 
@@ -151,24 +159,16 @@ const App = () => {
         <div>
           <label>
             username
-            <input
-              type="text"
-              value={username}
-              onChange={({ target }) => setUsername(target.value)}
-            />
+            <input type='text' value={username} onChange={({ target }) => setUsername(target.value)} />
           </label>
         </div>
         <div>
           <label>
             password
-            <input
-              type="password"
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
+            <input type='password' value={password} onChange={({ target }) => setPassword(target.value)} />
           </label>
         </div>
-        <button type="submit">login</button>
+        <button type='submit'>login</button>
       </form>
     </div>
   )

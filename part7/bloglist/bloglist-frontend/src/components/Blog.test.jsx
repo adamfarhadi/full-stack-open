@@ -11,7 +11,7 @@ test('renders title and author without toggling visibility but not url or likes'
     user: {
       username: 'test-username',
       name: 'name namesson',
-    }
+    },
   }
 
   const { container } = render(<Blog blog={blog} />)
@@ -36,15 +36,15 @@ test('renders title, author, url, and likes after toggling visibility', async ()
     user: {
       username: 'test-username',
       name: 'name namesson',
-    }
+    },
   }
 
   const currentUser = {
     username: 'tester',
-    name: 'Test McTester'
+    name: 'Test McTester',
   }
 
-  const { container } = render(<Blog blog={blog} currentUser={currentUser}/>)
+  const { container } = render(<Blog blog={blog} currentUser={currentUser} />)
 
   const user = userEvent.setup()
   const toggleVisibilityButton = container.querySelector('#toggle-visibility-button')
@@ -70,17 +70,17 @@ test('if like button clicked twice, handleLike is called twice', async () => {
     user: {
       username: 'test-username',
       name: 'name namesson',
-    }
+    },
   }
 
   const currentUser = {
     username: 'tester',
-    name: 'Test McTester'
+    name: 'Test McTester',
   }
 
   const mockHandleLike = vi.fn()
 
-  const { container } = render(<Blog blog={blog} currentUser={currentUser} handleLike={mockHandleLike}/>)
+  const { container } = render(<Blog blog={blog} currentUser={currentUser} handleLike={mockHandleLike} />)
 
   const user = userEvent.setup()
   const toggleVisibilityButton = container.querySelector('#toggle-visibility-button')

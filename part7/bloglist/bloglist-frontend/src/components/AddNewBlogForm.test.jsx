@@ -23,5 +23,9 @@ test('AddNewBlogForm calls event handler createBlog with correct details', async
   await user.click(submitButton)
 
   expect(createBlog.mock.calls).toHaveLength(1)
-  expect(createBlog.mock.calls[0][0]).toStrictEqual({ title: titleInputValue, author: authorInputValue, url: urlInputValue })
+  expect(createBlog.mock.calls[0][0]).toStrictEqual({
+    title: titleInputValue,
+    author: authorInputValue,
+    url: urlInputValue,
+  })
 })

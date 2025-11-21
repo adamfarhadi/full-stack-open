@@ -8,7 +8,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   }
 
   const toggleVisibility = () => {
@@ -29,7 +29,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
       <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
         <li id='blog-url'>{blog.url}</li>
         <li id='blog-likes'>
-          likes: {blog.likes} {' '}
+          likes: {blog.likes}{' '}
           <button onClick={() => handleLike(blog)} id='handle-like-button'>
             like
           </button>
@@ -43,8 +43,12 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
 
   return (
     <div style={blogStyle} data-testid='blog-box'>
-      <div id='blog-title' style={{ display: 'inline' }}>{blog.title} </div>
-      <div id='blog-author' style={{ display: 'inline' }}>{blog.author} </div>
+      <div id='blog-title' style={{ display: 'inline' }}>
+        {blog.title}{' '}
+      </div>
+      <div id='blog-author' style={{ display: 'inline' }}>
+        {blog.author}{' '}
+      </div>
       <button onClick={toggleVisibility} id='toggle-visibility-button'>
         {visible ? 'hide' : 'show'}
       </button>
