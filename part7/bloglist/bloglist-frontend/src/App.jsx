@@ -8,12 +8,14 @@ import Togglable from './components/Togglable'
 import AddNewBlogForm from './components/AddNewBlogForm'
 import NotificationContext from './NotificationContext'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import UserContext from './UserContext'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  // const [user, setUser] = useState(null)
   const { notify } = useContext(NotificationContext)
+  const { user, userDispatch } = useContext(UserContext)
 
   const queryClient = useQueryClient()
 
@@ -49,9 +51,13 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogAppUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const loggedInUser = JSON.parse(loggedUserJSON)
+      // setUser(loggedInUser)
+      userDispatch({
+        type: 'SET_USER',
+        payload: loggedInUser,
+      })
+      blogService.setToken(loggedInUser.token)
     }
   }, [])
 
@@ -59,11 +65,16 @@ const App = () => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({ username, password })
-      window.localStorage.setItem('loggedInBlogAppUser', JSON.stringify(user))
-      blogService.setToken(user.token)
+      const loggedInUser = await loginService.login({ username, password })
+      window.localStorage.setItem('loggedInBlogAppUser', JSON.stringify(loggedInUser))
+      blogService.setToken(loggedInUser.token)
 
-      setUser(user)
+      // setUser(loggedInUser)
+      userDispatch({
+        type: 'SET_USER',
+        payload: loggedInUser,
+      })
+
       setUsername('')
       setPassword('')
     } catch {
@@ -78,7 +89,10 @@ const App = () => {
   }
 
   const handleLogout = async () => {
-    setUser(null)
+    // setUser(null)
+    userDispatch({
+      type: 'CLEAR_USER',
+    })
     window.localStorage.removeItem('loggedInBlogAppUser')
   }
 
