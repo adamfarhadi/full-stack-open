@@ -27,15 +27,14 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
   const showDetails = () => (
     <>
       <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-        <li id='blog-url'>{blog.url}</li>
+        <li id='blog-url'>url: {blog.url}</li>
         <li id='blog-likes'>
           likes: {blog.likes}{' '}
           <button onClick={() => handleLike(blog)} id='handle-like-button'>
             like
           </button>
         </li>
-        {console.log('blog: ', blog)}
-        <li>{blog.user.name}</li>
+        <li>created by: {blog.user.name}</li>
         {showDeleteButton()}
       </ul>
     </>
@@ -44,7 +43,7 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
   return (
     <div style={blogStyle} data-testid='blog-box'>
       <div id='blog-title' style={{ display: 'inline' }}>
-        {blog.title}{' '}
+        <em>{blog.title}</em>{' by '}
       </div>
       <div id='blog-author' style={{ display: 'inline' }}>
         {blog.author}{' '}
