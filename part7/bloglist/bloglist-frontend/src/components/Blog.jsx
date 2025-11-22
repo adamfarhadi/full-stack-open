@@ -43,7 +43,8 @@ const Blog = ({ blog, handleLike, currentUser, handleRemove }) => {
   return (
     <div style={blogStyle} data-testid='blog-box'>
       <div id='blog-title' style={{ display: 'inline' }}>
-        <em>{blog.title}</em>{' by '}
+        <em>{blog.title}</em>
+        {' by '}
       </div>
       <div id='blog-author' style={{ display: 'inline' }}>
         {blog.author}{' '}

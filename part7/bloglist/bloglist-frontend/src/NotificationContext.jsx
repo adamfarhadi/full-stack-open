@@ -31,11 +31,7 @@ export const NotificationContextProvider = (props) => {
     }, 1000 * timeInSeconds)
   }
 
-  return (
-    <NotificationContext.Provider value={{ notification, notify }}>
-      {props.children}
-    </NotificationContext.Provider>
-  )
+  return <NotificationContext.Provider value={{ notification, notify }}>{props.children}</NotificationContext.Provider>
 }
 
 export default NotificationContext
