@@ -9,11 +9,11 @@ import AddNewBlogForm from './components/AddNewBlogForm'
 import NotificationContext from './NotificationContext'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import UserContext from './UserContext'
+import Users from './components/Users'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  // const [user, setUser] = useState(null)
   const { notify } = useContext(NotificationContext)
   const { user, userDispatch } = useContext(UserContext)
 
@@ -52,7 +52,6 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogAppUser')
     if (loggedUserJSON) {
       const loggedInUser = JSON.parse(loggedUserJSON)
-      // setUser(loggedInUser)
       userDispatch({
         type: 'SET_USER',
         payload: loggedInUser,
@@ -69,7 +68,6 @@ const App = () => {
       window.localStorage.setItem('loggedInBlogAppUser', JSON.stringify(loggedInUser))
       blogService.setToken(loggedInUser.token)
 
-      // setUser(loggedInUser)
       userDispatch({
         type: 'SET_USER',
         payload: loggedInUser,
@@ -89,7 +87,6 @@ const App = () => {
   }
 
   const handleLogout = async () => {
-    // setUser(null)
     userDispatch({
       type: 'CLEAR_USER',
     })
@@ -184,6 +181,7 @@ const App = () => {
         .map((blog) => (
           <Blog key={blog.id} blog={blog} handleLike={handleLike} currentUser={user} handleRemove={handleRemove} />
         ))}
+      <Users />
     </div>
   )
 
