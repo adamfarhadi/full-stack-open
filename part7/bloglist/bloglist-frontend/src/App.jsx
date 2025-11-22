@@ -13,7 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const { notificationDispatch } = useContext(NotificationContext)
+  const { notify } = useContext(NotificationContext)
 
   const blogFormRef = useRef()
 
@@ -42,16 +42,13 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch {
-      notificationDispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
+      notify(
+        {
           notification_type: 'error',
           message: 'wrong username or password',
         },
-      })
-      setTimeout(() => {
-        notificationDispatch({ type: 'RESET_NOTIFICATION' })
-      }, 5000)
+        5
+      )
     }
   }
 
@@ -65,28 +62,21 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog))
-
-      notificationDispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
+      notify(
+        {
           notification_type: 'success',
           message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`,
         },
-      })
-      setTimeout(() => {
-        notificationDispatch({ type: 'RESET_NOTIFICATION' })
-      }, 5000)
+        5
+      )
     } catch {
-      notificationDispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
+      notify(
+        {
           notification_type: 'error',
           message: `error adding blog ${blogObject.title} by ${blogObject.author}`,
         },
-      })
-      setTimeout(() => {
-        notificationDispatch({ type: 'RESET_NOTIFICATION' })
-      }, 5000)
+        5
+      )
     }
   }
 
@@ -100,16 +90,13 @@ const App = () => {
       const updatedBlog = await blogService.update(blogToUpdate.id, blogToUpdate)
       setBlogs(blogs.map((b) => (b.id === updatedBlog.id ? updatedBlog : b)))
     } catch {
-      notificationDispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
+      notify(
+        {
           notification_type: 'error',
           message: `error liking blog ${blogObject.title}`,
         },
-      })
-      setTimeout(() => {
-        notificationDispatch({ type: 'RESET_NOTIFICATION' })
-      }, 5000)
+        5
+      )
     }
   }
 
@@ -120,28 +107,22 @@ const App = () => {
         await blogService.remove(blogToRemove.id)
         setBlogs(blogs.filter((b) => b.id !== blogToRemove.id))
 
-        notificationDispatch({
-          type: 'SET_NOTIFICATION',
-          payload: {
+        notify(
+          {
             notification_type: 'success',
             message: `blog ${blogObject.title} successfully deleted`,
           },
-        })
-        setTimeout(() => {
-          notificationDispatch({ type: 'RESET_NOTIFICATION' })
-        }, 5000)
+          5
+        )
       }
     } catch {
-      notificationDispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
+      notify(
+        {
           notification_type: 'error',
           message: `error deleting blog ${blogObject.title}`,
         },
-      })
-      setTimeout(() => {
-        notificationDispatch({ type: 'RESET_NOTIFICATION' })
-      }, 5000)
+        5
+      )
     }
   }
 
