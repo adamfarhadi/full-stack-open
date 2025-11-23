@@ -10,6 +10,15 @@ const BlogView = ({ blog, handleLike, currentUser, handleRemove }) => {
       )
   }
 
+  const showComments = () => (
+    <div>
+      <h3>comments</h3>
+      <ul>
+        {blog.comments.map(comment => <li key={comment.id}>{comment.content}</li>)}
+      </ul>
+    </div>
+  )
+
   return (
     <div>
       <h2>
@@ -27,6 +36,7 @@ const BlogView = ({ blog, handleLike, currentUser, handleRemove }) => {
         </li>
         <li>created by: {blog.user.name}</li>
         {showDeleteButton()}
+        {showComments()}
       </ul>
     </div>
   )

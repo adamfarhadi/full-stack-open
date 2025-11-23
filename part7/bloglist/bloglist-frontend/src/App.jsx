@@ -125,6 +125,7 @@ const App = () => {
         ...blogObject,
         likes: blogObject.likes + 1,
         user: blogObject.user.id,
+        comments: blogObject.comments.map((comment) => comment.id),
       }
       await updateBlogMutation.mutateAsync(blogToUpdate)
     } catch {
