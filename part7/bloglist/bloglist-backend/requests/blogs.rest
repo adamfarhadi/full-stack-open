@@ -29,3 +29,11 @@ content-type: application/json
     "likes": 748,
     "user": "6909c04f622842b9c6122167"
 }
+
+###
+POST http://localhost:3003/api/blogs/69235cc0353d703066b49f81/comments
+content-type: application/json
+
+{
+    "content": "bros"
+}
