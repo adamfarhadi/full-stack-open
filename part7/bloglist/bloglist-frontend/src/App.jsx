@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useContext } from 'react'
-import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -11,17 +10,18 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import UserContext from './UserContext'
 import Users from './components/Users'
 
-import { Routes, Route, Link, } from 'react-router-dom'
+import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom'
+import BlogCard from './components/BlogCard'
+import BlogView from './components/BlogView'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { notify } = useContext(NotificationContext)
   const { user, userDispatch } = useContext(UserContext)
-
   const queryClient = useQueryClient()
-
   const blogFormRef = useRef()
+  const navigate = useNavigate()
 
   const result = useQuery({
     queryKey: ['blogs'],
@@ -151,6 +151,8 @@ const App = () => {
           },
           5
         )
+
+        navigate('/')
       }
     } catch {
       notify(
@@ -171,7 +173,7 @@ const App = () => {
       {blogs
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} currentUser={user} handleRemove={handleRemove} />
+          <BlogCard key={blog.id} blog={blog} />
         ))}
     </div>
   )
@@ -198,6 +200,10 @@ const App = () => {
     </div>
   )
 
+  const blogs = result.data
+
+  const match = useMatch('/blogs/:id')
+
   if (result.isError) {
     return <div>blog service not available due to problems in server</div>
   }
@@ -206,11 +212,11 @@ const App = () => {
     return <div>loading blogs...</div>
   }
 
-  const blogs = result.data
-
   if (!user) {
     return loginForm()
   }
+
+  const blog = match ? blogs.find((b) => b.id === match.params.id) : null
 
   return (
     <div>
@@ -218,7 +224,7 @@ const App = () => {
       <Notification />
       {
         <p>
-          {user.name} logged in
+          {user.name} logged in {' '}
           <button type='button' onClick={handleLogout}>
             logout
           </button>
@@ -227,6 +233,10 @@ const App = () => {
       <Routes>
         <Route path='/' element={blogForm()} />
         <Route path='/users/*' element={<Users />} />
+        <Route
+          path='blogs/:id'
+          element={<BlogView blog={blog} handleLike={handleLike} currentUser={user} handleRemove={handleRemove} />}
+        />
       </Routes>
     </div>
   )
