@@ -11,6 +11,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import UserContext from './UserContext'
 import Users from './components/Users'
 
+import { Routes, Route, Link } from 'react-router-dom'
+
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -181,7 +183,6 @@ const App = () => {
         .map((blog) => (
           <Blog key={blog.id} blog={blog} handleLike={handleLike} currentUser={user} handleRemove={handleRemove} />
         ))}
-      <Users />
     </div>
   )
 
@@ -217,10 +218,14 @@ const App = () => {
 
   const blogs = result.data
 
+  if (!user) return loginForm()
+
   return (
     <div>
-      {!user && loginForm()}
-      {user && blogForm()}
+      <Routes>
+        <Route path='/' element={blogForm()} />
+        <Route path='/users' element={<Users />} />
+      </Routes>
     </div>
   )
 }
