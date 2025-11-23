@@ -220,16 +220,20 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <div style={{ background: 'LightGray', padding: 5 }}>
+        <Link style={{ padding: 5 }} to='/'>
+          blogs
+        </Link>
+        <Link style={{ padding: 5 }} to='/users'>
+          users
+        </Link>
+        {user.name} logged in{' '}
+        <button type='button' onClick={handleLogout}>
+          logout
+        </button>
+      </div>
+      <h2>blog app</h2>
       <Notification />
-      {
-        <p>
-          {user.name} logged in {' '}
-          <button type='button' onClick={handleLogout}>
-            logout
-          </button>
-        </p>
-      }
       <Routes>
         <Route path='/' element={blogForm()} />
         <Route path='/users/*' element={<Users />} />
