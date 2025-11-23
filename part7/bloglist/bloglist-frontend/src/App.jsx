@@ -11,7 +11,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import UserContext from './UserContext'
 import Users from './components/Users'
 
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useMatch } from 'react-router-dom'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -165,16 +165,6 @@ const App = () => {
 
   const blogForm = () => (
     <div>
-      <h2>blogs</h2>
-      <Notification />
-      {
-        <p>
-          {user.name} logged in
-          <button type='button' onClick={handleLogout}>
-            logout
-          </button>
-        </p>
-      }
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <AddNewBlogForm createBlog={addBlog} />
       </Togglable>
@@ -218,10 +208,22 @@ const App = () => {
 
   const blogs = result.data
 
-  if (!user) return loginForm()
+  if (!user) {
+    return loginForm()
+  }
 
   return (
     <div>
+      <h2>blogs</h2>
+      <Notification />
+      {
+        <p>
+          {user.name} logged in
+          <button type='button' onClick={handleLogout}>
+            logout
+          </button>
+        </p>
+      }
       <Routes>
         <Route path='/' element={blogForm()} />
         <Route path='/users' element={<Users />} />
