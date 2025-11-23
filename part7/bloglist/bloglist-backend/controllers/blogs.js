@@ -42,10 +42,15 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     return response.status(403).json({ error: 'user is unauthorized to perform the operation' })
   }
 
+  const blogComments = blog.comments
+  console.log('blogComments: ', blogComments)
+
   await blog.deleteOne()
 
   user.blogs = user.blogs.filter(b => b._id.toString() !== blog._id.toString())
   await user.save()
+
+  await Comment.deleteMany({ _id: { $in : blogComments } })
 
   response.status(204).end()
 })

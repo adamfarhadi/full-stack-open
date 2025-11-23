@@ -1,5 +1,40 @@
+import { useState } from 'react'
+import blogService from '../services/blogs'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useContext } from 'react'
+import NotificationContext from '../NotificationContext'
+
 const BlogView = ({ blog, handleLike, currentUser, handleRemove }) => {
+  const [comment, setComment] = useState('')
+  const { notify } = useContext(NotificationContext)
+  const queryClient = useQueryClient()
+
+  const addCommentMutation = useMutation({
+    mutationFn: ({ blogId, commentObj }) => blogService.addComment(blogId, commentObj),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+    },
+  })
+
   if (!blog) return null
+
+  const addComment = async (event) => {
+    event.preventDefault()
+
+    try {
+      await addCommentMutation.mutateAsync({ blogId: blog.id, commentObj: { content: comment } })
+      setComment('')
+      notify({
+        notification_type: 'success',
+        message: `comment successfully added`,
+      }, 5)
+    } catch (error) {
+      notify({
+        notification_type: 'error',
+        message: `error adding comment`,
+      }, 5)
+    }
+  }
 
   const showDeleteButton = () => {
     if (currentUser.username === blog.user.username)
@@ -13,8 +48,16 @@ const BlogView = ({ blog, handleLike, currentUser, handleRemove }) => {
   const showComments = () => (
     <div>
       <h3>comments</h3>
+      <form onSubmit={addComment}>
+        <div style={{ paddingBottom: 10 }}>
+          <input type='text' value={comment} onChange={({ target }) => setComment(target.value)} />
+          <button type='submit'>add comment</button>
+        </div>
+      </form>
       <ul>
-        {blog.comments.map(comment => <li key={comment.id}>{comment.content}</li>)}
+        {blog.comments.map((comment) => (
+          <li key={comment.id}>{comment.content}</li>
+        ))}
       </ul>
     </div>
   )
