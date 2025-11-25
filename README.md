@@ -26,4 +26,7 @@ My solutions for the full stack web development course offered by Open Universit
 * Key tools/frameworks/libraries used: React, Redux, TanStack Query
 
 ## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
-* Exercises done: 21/21: React, TanStack Query, React Router, Prettier, Material UI
+* Exercises done: 21/21 
+* Key tools/frameworks/libraries used: React, TanStack Query, React Router, Prettier, Material UI
+
+![Full Stack Open Certificate issued to Adam Farhadi](adam-farhadi-FSO-certificate.png)
