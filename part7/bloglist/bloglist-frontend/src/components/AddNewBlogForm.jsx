@@ -1,3 +1,4 @@
+import { Button, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 
 const AddNewBlogForm = ({ createBlog }) => {
@@ -15,29 +16,22 @@ const AddNewBlogForm = ({ createBlog }) => {
 
   return (
     <div>
-      <h2>create new</h2>
+      <Typography variant='h4' gutterBottom>
+        Create New
+      </Typography>
       <form onSubmit={addBlog}>
         <div>
-          <label>
-            title:
-            <input type='text' value={title} onChange={({ target }) => setTitle(target.value)} />
-          </label>
+          <TextField label='title' type='text' value={title} onChange={({ target }) => setTitle(target.value)} />
         </div>
         <div>
-          <label>
-            author:
-            <input type='text' value={author} onChange={({ target }) => setAuthor(target.value)} />
-          </label>
+          <TextField label='author' type='text' value={author} onChange={({ target }) => setAuthor(target.value)} />
         </div>
         <div>
-          <label>
-            url:
-            <input type='text' value={url} onChange={({ target }) => setUrl(target.value)} />
-          </label>
+          <TextField label='url' type='text' value={url} onChange={({ target }) => setUrl(target.value)} />
         </div>
-        <button type='submit' id='add-new-blog-submit-button'>
+        <Button variant='contained' color='primary' type='submit'>
           create
-        </button>
+        </Button>
       </form>
     </div>
   )

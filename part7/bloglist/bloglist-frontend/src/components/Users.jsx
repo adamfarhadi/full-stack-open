@@ -3,6 +3,7 @@ import userService from '../services/users'
 import { Routes, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import AddedBlogsByUser from './AddedBlogsByUser'
+import { TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Table, Paper } from '@mui/material'
 
 const Users = () => {
   const result = useQuery({
@@ -26,25 +27,27 @@ const Users = () => {
 
   const usersForm = () => (
     <div>
-      <h2>Users</h2>
-      <table style={{ textAlign: 'left' }}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Blogs Created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>
-                <Link to={`/users/${user.id}`}>{user.name}</Link>
-              </td>
-              <td>{user.blogs.length}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Typography variant='h3' gutterBottom>
+        Users
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Blogs Created</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell><Link to={`/users/${user.id}`}>{user.name}</Link></TableCell>
+                <TableCell>{user.blogs.length}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 

@@ -11,8 +11,23 @@ import UserContext from './UserContext'
 import Users from './components/Users'
 
 import { Routes, Route, Link, useMatch, useNavigate } from 'react-router-dom'
-import BlogCard from './components/BlogCard'
 import BlogView from './components/BlogView'
+import {
+  Paper,
+  TableBody,
+  TableContainer,
+  TableRow,
+  Table,
+  TableCell,
+  TableHead,
+  TextField,
+  Button,
+  Typography,
+  Alert,
+  Toolbar,
+  AppBar,
+  Box,
+} from '@mui/material'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -171,32 +186,55 @@ const App = () => {
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <AddNewBlogForm createBlog={addBlog} />
       </Togglable>
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
-        ))}
+      <Typography variant='h3' gutterBottom>
+        Blogs
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Blog</TableCell>
+              <TableCell>Author</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {blogs
+              .sort((a, b) => b.likes - a.likes)
+              .map((blog) => (
+                <TableRow key={blog.id}>
+                  <TableCell>
+                    <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                  </TableCell>
+                  <TableCell>{blog.author}</TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 
   const loginForm = () => (
     <div>
-      <h1>log in to application</h1>
+      <Typography variant='h2' gutterBottom>
+        Login to Blog App
+      </Typography>
       <Notification />
       <form onSubmit={handleLogin}>
         <div>
-          <label>
-            username
-            <input type='text' value={username} onChange={({ target }) => setUsername(target.value)} />
-          </label>
+          <TextField label='username' value={username} onChange={({ target }) => setUsername(target.value)} />
         </div>
         <div>
-          <label>
-            password
-            <input type='password' value={password} onChange={({ target }) => setPassword(target.value)} />
-          </label>
+          <TextField
+            label='password'
+            type='password'
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+          />
         </div>
-        <button type='submit'>login</button>
+        <Button variant='contained' color='primary' type='submit'>
+          login
+        </Button>
       </form>
     </div>
   )
@@ -221,19 +259,30 @@ const App = () => {
 
   return (
     <div>
-      <div style={{ background: 'LightGray', padding: 5 }}>
-        <Link style={{ padding: 5 }} to='/'>
-          blogs
-        </Link>
-        <Link style={{ padding: 5 }} to='/users'>
-          users
-        </Link>
-        {user.name} logged in{' '}
-        <button type='button' onClick={handleLogout}>
-          logout
-        </button>
-      </div>
-      <h2>blog app</h2>
+      <AppBar position='static'>
+        <Toolbar>
+          <Button color='inherit' component={Link} to='/'>
+            home
+          </Button>
+          <Button color='inherit' component={Link} to='/users'>
+            users
+          </Button>
+          <Button color='inherit' onClick={handleLogout}>
+            logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      <Box sx={{ mt: 2 }}>
+        <Typography variant='body1' gutterBottom>
+          {user.name} logged in{' '}
+        </Typography>
+      </Box>
+
+      <Typography variant='h2' gutterBottom>
+        Blog App
+      </Typography>
+
       <Notification />
       <Routes>
         <Route path='/' element={blogForm()} />
