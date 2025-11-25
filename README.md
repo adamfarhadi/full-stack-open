@@ -24,3 +24,6 @@ My solutions for the full stack web development course offered by Open Universit
 ## Part 6 - [Advanced state management](https://fullstackopen.com/en/part6)
 * Exercises done: 24/24
 * Key tools/frameworks/libraries used: React, Redux, TanStack Query
+
+## Part 7 - [React router, custom hooks, styling app with CSS and webpack](https://fullstackopen.com/en/part7)
+* Exercises done: 21/21: React, TanStack Query, React Router, Prettier, Material UI
